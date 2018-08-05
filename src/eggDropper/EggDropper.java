@@ -11,8 +11,8 @@ public class EggDropper {
 				+ "to find out the highest floor that doesn't break the eggs is: " + minEggDropper2eggs100Floors());
 		
 		
-		int floors 	= 2;
-		int eggs	= 0;
+		int floors 	= 1000;
+		int eggs	= 1000;
 		
 		System.out.println("In a " + floors + "-floor skyscraper with " + eggs + " eggs, the minimun number of attempts of dropping an egg "
 				+ "to find out the highest floor that doesn't break the eggs is: " + minEggDropperCalc(floors, eggs));
@@ -31,7 +31,7 @@ public class EggDropper {
 	public static int minEggDropperCalc(int floors, int eggs) {
 		
 		//The minimum number of egg drops we need to find the criticalFloor, the highest floor we can throw
-		//an egg without breaking the egg its minDrops100. To calculate this number we need to calculate
+		//an egg without breaking the egg its eggDropperMatrix[floors][eggs]. To calculate this number we need to calculate
 		//all the posible combination that can happen and save for each floor the minimum number of throws.
 		//We calculate this dropping the eggs from every floor.
 
@@ -41,10 +41,16 @@ public class EggDropper {
 		//with 0 eggs and 0 floors too.
 		int[][] eggDropperMatrix = new int[floors + 1][eggs + 1];
 		
-		//Firstly, for 0 floors and 0 eggs its will always be a 0:
+		//Firstly, with 0 eggs you can't throw any eggs. Same with 0 floors:
+		if(floors == 0 || eggs == 0) {
+			return 0;
+		}
+		
+		//But we need to complete the matrix.
+		//For 0 floors and 0 eggs its will always be a 0:
 		eggDropperMatrix[0][0] = 0;
 		
-		//Then, with 0 eggs you can't throw any eggs. Same with 0 floors:
+//		//Then for 0 eggs or 0 floors the results are 0:
 		for(int i = 1; i <= floors; i++) {
 			eggDropperMatrix[i][0] = 0;
 		}
@@ -52,7 +58,7 @@ public class EggDropper {
 		for(int i = 1; i <= eggs; i++) {
 			eggDropperMatrix[0][i] = 0;
 		}
-		
+
 		//With only 1 egg, we need to do the same throws as floors
 		for(int i = 1; i <= floors; i++) {
 			eggDropperMatrix[i][1] = i;
@@ -89,9 +95,9 @@ public class EggDropper {
 						eggDropperMatrix[x][y] = numberOfThrows;
 					}
 					
-				}
-			}
-		}
+				}//End for
+			}//End for y
+		}//End for x
 		
 		//Finally, we return the element we were looking for
 		return eggDropperMatrix[floors][eggs];
